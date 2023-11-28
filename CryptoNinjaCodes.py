@@ -24,6 +24,9 @@ class CryptoNinjaCodes(InfinityGridStrategy):
         self.grid_price_step_size = Decimal("0.01")
         self.trailing_stop_order_type = "limit"
 
+        # променям типа на променливата trailing_stop_price на float
+        self.trailing_stop_price = float(self.trailing_stop_price)
+
     def on_order_filled(self, order_filled_event):
         # Изчисляване на текущата цена за проследяващ стоп
         trailing_stop_price = order_filled_event.price - self.spread
@@ -46,7 +49,7 @@ class CryptoNinjaCodes(InfinityGridStrategy):
 
     def on_data(self, data):
         # Проверка дали е необходимо да се задейства защитен стоп
-        if bool(self.trailing_stop_price) is False:
+        if self.market_info.price < self.trailing_stop_price:
             # Затваряне на всички активни поръчки
             for order in self.active_orders:
                 order.cancel()
