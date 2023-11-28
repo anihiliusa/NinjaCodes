@@ -46,7 +46,7 @@ class CryptoNinjaCodes(InfinityGridStrategy):
 
     def on_data(self, data):
         # Проверка дали е необходимо да се задейства защитен стоп
-        if self.market_info.price < trailing_stop_price:
+        if bool(self.trailing_stop_price) is False:
             # Затваряне на всички активни поръчки
             for order in self.active_orders:
                 order.cancel()
@@ -68,4 +68,5 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
